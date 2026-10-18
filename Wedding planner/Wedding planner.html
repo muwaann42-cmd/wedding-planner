@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Lumière & Co. — Soft Pastel Luxury Wedding Planner</title>
+  <!-- Google Fonts: Cormorant Garamond (Luxury Serif) & Prompt (Thai/English Sans) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- Mobile Top Header -->
+  <header class="mobile-topbar">
+    <div class="mobile-brand">
+      <div class="brand-monogram">L&amp;C</div>
+      <div>
+        <div id="mobile-couple-names" style="font-family:var(--font-serif); font-size:18px; font-weight:700; line-height:1.1;">พิมดาว &amp; ภัทรพล</div>
+        <div style="font-size:10.5px; color:var(--champagne-500); letter-spacing:1.2px; text-transform:uppercase;">Luxury Wedding Suite</div>
+        <div id="mob-cloud-sync-badge" class="cloud-badge cloud-local" style="margin-top:2px; padding:1px 6px; font-size:9.5px; width:auto; display:inline-flex;">
+          <span class="cloud-dot" style="width:5px;height:5px;"></span>
+          <span id="mob-cloud-sync-text">โหมดออฟไลน์</span>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex; gap:6px;">
+      <button class="btn btn-soft btn-sm" onclick="App.openWeddingInfoModal()">✎ ตั้งค่างาน</button>
+      <button class="btn btn-secondary btn-sm" onclick="App.exportBackupJSON()" title="สำรองข้อมูล JSON">💾</button>
+    </div>
+  </header>
+
+  <div class="app-layout">
+    <!-- Desktop Sidebar -->
+    <aside class="sidebar">
+      <div class="brand-header">
+        <div id="sidebar-logo-slot" class="brand-monogram">L&amp;C</div>
+        <h1 class="brand-title">Lumière &amp; Co.</h1>
+        <div class="brand-subtitle">Bespoke Wedding Planner</div>
+      </div>
+
+      <!-- Couple Quick Profile -->
+      <div class="sidebar-couple-card" onclick="App.openWeddingInfoModal()" title="คลิกเพื่อแก้ไขข้อมูลงานแต่งงาน / เปลี่ยนรูปปก & โลโก้">
+        <div id="sidebar-couple-names" class="sidebar-couple-names">พิมดาว &amp; ภัทรพล</div>
+        <div id="sidebar-wedding-date" class="sidebar-wedding-date">14 ก.พ. 2570</div>
+        <div class="sidebar-countdown-pill">
+          <span>⏳</span>
+          <span id="sidebar-cd-text">กำลังคำนวณ...</span>
+        </div>
+        <div id="cloud-sync-badge" class="cloud-badge cloud-local">
+          <span class="cloud-dot"></span>
+          <span id="cloud-sync-text">โหมดออฟไลน์ (Local)</span>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <ul class="nav-menu">
+        <li class="nav-item active" data-nav="dashboard">
+          <span class="nav-icon">✨</span>
+          <span>Dashboard ภาพรวม</span>
+        </li>
+        <li class="nav-item" data-nav="moodboard">
+          <span class="nav-icon">🎨</span>
+          <span>Moodboard คุยงาน</span>
+          <span id="badge-moodboard" class="nav-badge">6</span>
+        </li>
+        <li class="nav-item" data-nav="vendors">
+          <span class="nav-icon">🏛️</span>
+          <span>Vendor Workspace</span>
+          <span id="badge-vendors" class="nav-badge">3/5</span>
+        </li>
+        <li class="nav-item" data-nav="checklist">
+          <span class="nav-icon">📋</span>
+          <span>Checklist &amp; Timeline</span>
+          <span id="badge-checklist" class="nav-badge">2/11</span>
+        </li>
+        <li class="nav-item" data-nav="guests">
+          <span class="nav-icon">🥂</span>
+          <span>Guest List &amp; ผังที่นั่ง</span>
+          <span id="badge-guests" class="nav-badge">18 ที่นั่ง</span>
+        </li>
+        <li class="nav-item" data-nav="budget">
+          <span class="nav-icon">💎</span>
+          <span>Budget Tracker</span>
+          <span id="badge-budget" class="nav-badge">81%</span>
+        </li>
+        <li class="nav-item" data-nav="rundown">
+          <span class="nav-icon">⏳</span>
+          <span>Run down ลำดับพิธีการ</span>
+          <span id="badge-rundown" class="nav-badge">0/9</span>
+        </li>
+      </ul>
+
+      <!-- Data Management Controls -->
+      <div class="sidebar-footer">
+        <div class="storage-status">
+          <span><span class="status-dot"></span>บันทึกข้อมูลอัตโนมัติ</span>
+          <button style="background:none;border:none;color:var(--blush-600);cursor:pointer;font-size:11px;text-decoration:underline;" onclick="App.resetDemoData()">รีเซ็ตตัวอย่าง</button>
+        </div>
+        <div class="sidebar-data-btns">
+          <button class="btn btn-secondary btn-sm" onclick="App.exportBackupJSON()">💾 Backup JSON</button>
+          <label class="btn btn-secondary btn-sm" style="margin:0;">
+            📂 Import JSON
+            <input type="file" accept=".json" style="display:none;" onchange="App.importBackupJSON(event)" />
+          </label>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Workspace -->
+    <main class="main-content">
+
+      <!-- ====================================================================
+           VIEW 1: DASHBOARD
+           ==================================================================== -->
+      <section id="view-dashboard" class="view-section active">
+        <div class="page-header">
+          <div>
+            <div class="page-eyebrow">Wedding Command Center</div>
+            <h2 class="page-title">ภาพรวมและการนับเวลาถอยหลัง</h2>
+            <p class="page-subtitle">แก้ไขข้อมูลบ่าวสาว วัน เวลา สถานที่ รูปภาพ และคลิกการ์ดไฮไลท์เพื่อเข้าสู่แต่ละส่วนได้ทันที</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-secondary" onclick="App.openWeddingInfoModal()">✎ แก้ไขข้อมูลงานแต่ง &amp; รูปภาพ</button>
+            <button class="btn btn-primary" onclick="App.openTaskModal()">+ เพิ่มงานสำคัญ</button>
+          </div>
+        </div>
+
+        <!-- Hero Banner with Cover Photo & Logo -->
+        <div class="hero-cover-container">
+          <img id="hero-cover-bg" class="hero-cover-bg" src="" alt="Wedding Cover" />
+          <div class="hero-cover-overlay">
+            <div>
+              <div id="hero-logo-slot" class="hero-logo-badge"></div>
+              <div class="hero-tag">
+                <span>💍</span>
+                <span id="hero-hashtag">#PimPhatForever2027</span>
+              </div>
+              <h3 id="hero-couple-names" class="hero-couple-names">พิมดาว (Pimdao) &amp; ภัทรพล (Phattarapon)</h3>
+              <p id="hero-couple-note" style="font-size:14px; color:#F2E9DC; margin-top:6px; max-width:650px;"></p>
+
+              <div class="hero-meta-grid" style="margin-top:16px;">
+                <div class="hero-meta-item">
+                  <span>📅</span>
+                  <span id="hero-date">14 ก.พ. 2570</span>
+                </div>
+                <div class="hero-meta-item">
+                  <span>📍</span>
+                  <span id="hero-venue">The Glasshouse at Nai Lert Park</span>
+                </div>
+                <div class="hero-meta-item">
+                  <span>🌸</span>
+                  <span id="hero-theme">Soft Pastel Garden &amp; Champagne Elegance</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Real-Time Countdown Box -->
+            <div class="hero-countdown-box" style="background:rgba(255,255,255,0.92);">
+              <div class="countdown-label">Counting Down to Our Forever</div>
+              <div class="countdown-grid">
+                <div class="countdown-unit">
+                  <div id="cd-days" class="countdown-number">0</div>
+                  <div class="countdown-text">วัน (Days)</div>
+                </div>
+                <div class="countdown-unit">
+                  <div id="cd-hours" class="countdown-number">00</div>
+                  <div class="countdown-text">ชั่วโมง (Hrs)</div>
+                </div>
+                <div class="countdown-unit">
+                  <div id="cd-mins" class="countdown-number">00</div>
+                  <div class="countdown-text">นาที (Mins)</div>
+                </div>
+                <div class="countdown-unit">
+                  <div id="cd-secs" class="countdown-number">00</div>
+                  <div class="countdown-text">วินาที (Secs)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CLICKABLE HIGHLIGHTS GRID (คลิกเพื่อเข้าสู่แต่ละหน้าได้เลย) -->
+        <div style="margin-bottom:14px;">
+          <h3 style="font-family:var(--font-serif); font-size:22px; font-weight:600; color:var(--text-primary); margin-bottom:4px;">
+            📌 ไฮไลท์สำคัญของงานแต่งงาน (คลิกเพื่อเข้าสู่แต่ละหน้าได้ทันที)
+          </h3>
+          <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:14px;">รวมสรุป 5 หัวข้อหลัก: งบประมาณ, To-do list, แขก, ผู้ให้บริการ และ ลำดับพิธีการ</p>
+        </div>
+
+        <div class="dash-highlight-grid">
+          <!-- 1. Budget Card -->
+          <div class="dash-highlight-card" onclick="App.switchView('budget')" title="คลิกเพื่อเปิดหน้า Budget Tracker">
+            <div>
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-size:13px; font-weight:600; color:var(--text-secondary);">💎 งบประมาณ (Budget)</span>
+                <span class="badge badge-blush">ดูรายละเอียด →</span>
+              </div>
+              <div id="hl-budget-spent" style="font-family:var(--font-serif); font-size:26px; font-weight:700; margin:8px 0 2px;">฿0</div>
+              <div id="hl-budget-remain" style="font-size:12px; color:var(--status-success-text); font-weight:500;">คงเหลือ ฿0</div>
+            </div>
+            <div style="font-size:11px; color:var(--text-muted); margin-top:10px; border-top:1px dashed var(--border-soft); padding-top:6px;">
+              ติดตามเงินมัดจำ &amp; ยอดค้างจ่าย
+            </div>
+          </div>
+
+          <!-- 2. Checklist / To-do list Card -->
+          <div class="dash-highlight-card" onclick="App.switchView('checklist')" title="คลิกเพื่อเปิดหน้า Checklist & Timeline">
+            <div>
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-size:13px; font-weight:600; color:var(--text-secondary);">📋 To-do List (งานสำคัญ)</span>
+                <span class="badge badge-champagne">ดูรายละเอียด →</span>
+              </div>
+              <div id="hl-checklist-done" style="font-family:var(--font-serif); font-size:26px; font-weight:700; margin:8px 0 2px;">0 / 0 งาน</div>
+              <div id="hl-checklist-sub" style="font-size:12px; color:var(--text-secondary); font-weight:500;">สำเร็จแล้ว 0%</div>
+            </div>
+            <div style="font-size:11px; color:var(--text-muted); margin-top:10px; border-top:1px dashed var(--border-soft); padding-top:6px;">
+              แยก 10 ช่วงเวลาตั้งแต่ 12 เดือนจนถึงวันงาน
+            </div>
+          </div>
+
+          <!-- 3. Guest List Card -->
+          <div class="dash-highlight-card" onclick="App.switchView('guests')" title="คลิกเพื่อเปิดหน้า Guest List & ผังที่นั่ง">
+            <div>
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-size:13px; font-weight:600; color:var(--text-secondary);">🥂 แขก &amp; ที่นั่ง (Guests)</span>
+                <span class="badge badge-lavender">ดูรายละเอียด →</span>
+              </div>
+              <div id="hl-guest-seats" style="font-family:var(--font-serif); font-size:26px; font-weight:700; margin:8px 0 2px;">0 ที่นั่ง</div>
+              <div id="hl-guest-sub" style="font-size:12px; color:var(--text-secondary); font-weight:500;">จากเป้าหมาย 250 ท่าน</div>
+            </div>
+            <div style="font-size:11px; color:var(--text-muted); margin-top:10px; border-top:1px dashed var(--border-soft); padding-top:6px;">
+              ดูรายชื่อ การตอบรับ และผังที่นั่งจริง
+            </div>
+          </div>
+
+          <!-- 4. Vendor Workspace Card -->
+          <div class="dash-highlight-card" onclick="App.switchView('vendors')" title="คลิกเพื่อเปิดหน้า Vendor Workspace">
+            <div>
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-size:13px; font-weight:600; color:var(--text-secondary);">🏛️ ผู้ให้บริการ (Vendors)</span>
+                <span class="badge badge-success">ดูรายละเอียด →</span>
+              </div>
+              <div id="hl-vendor-count" style="font-family:var(--font-serif); font-size:26px; font-weight:700; margin:8px 0 2px;">0 / 0 ร้าน</div>
+              <div id="hl-vendor-sub" style="font-size:12px; color:var(--text-secondary); font-weight:500;">อนุมัติแล้ว</div>
+            </div>
+            <div style="font-size:11px; color:var(--text-muted); margin-top:10px; border-top:1px dashed var(--border-soft); padding-top:6px;">
+              แยกหมวดหมู่ ใบเสนอราคา สลิปโอน และโน้ต
+            </div>
+          </div>
+
+          <!-- 5. Rundown Card -->
+          <div class="dash-highlight-card" onclick="App.switchView('rundown')" title="คลิกเพื่อเปิดหน้า Run down">
+            <div>
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span style="font-size:13px; font-weight:600; color:var(--text-secondary);">⏳ ลำดับพิธีการ (Rundown)</span>
+                <span class="badge badge-info">ดูรายละเอียด →</span>
+              </div>
+              <div id="hl-rundown-count" style="font-family:var(--font-serif); font-size:26px; font-weight:700; margin:8px 0 2px;">0 / 0 คิว</div>
+              <div id="hl-rundown-sub" style="font-size:12px; color:var(--text-secondary); font-weight:500;">ฤกษ์เช้าและงานเลี้ยงฉลอง</div>
+            </div>
+            <div style="font-size:11px; color:var(--text-muted); margin-top:10px; border-top:1px dashed var(--border-soft); padding-top:6px;">
+              ตารางรันคิวรายนาที เพลงเปิดตัว &amp; โน้ตกำกับ
+            </div>
+          </div>
+        </div>
+
+        <!-- Dashboard Bottom 2 Columns -->
+        <div class="dashboard-grid">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">📋 To-do list ที่ต้องเร่งทำ</h3>
+                <div class="card-subtitle">ติ๊กเครื่องหมายถูกเมื่องานเสร็จสิ้น หรือคลิกปุ่มดูทั้งหมด</div>
+              </div>
+              <button class="btn btn-soft btn-sm" onclick="App.switchView('checklist')">ดู Checklist ทั้งหมด →</button>
+            </div>
+            <div id="dash-upcoming-tasks"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">⏳ ลำดับพิธีการคร่าวๆ (Rundown Highlights)</h3>
+                <div class="card-subtitle">ช่วงเวลาสำคัญในวันมงคลสมรส</div>
+              </div>
+              <button class="btn btn-soft btn-sm" onclick="App.switchView('rundown')">เปิดดู Rundown เต็ม →</button>
+            </div>
+            <div id="dash-rundown-highlight"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           VIEW 2: MOODBOARD (Categorized for Vendor Briefings)
+           ==================================================================== -->
+      <section id="view-moodboard" class="view-section">
+        <div class="page-header">
+          <div>
+            <div class="page-eyebrow">Aesthetic &amp; Vendor Discussions</div>
+            <h2 class="page-title">Moodboard &amp; โทนสีสำหรับคุยงาน</h2>
+            <p class="page-subtitle">จัดแยกหมวดหมู่ให้เป็นระเบียบ เพิ่ม/ลบรูปภาพ และใส่โน้ตบรีฟงานกับ Vendor แต่ละเจ้า</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-secondary" onclick="App.openModal('modal-swatch')">+ เพิ่มโทนสี</button>
+            <button class="btn btn-primary" onclick="App.openMoodModal()">+ เพิ่มไอเดีย &amp; ภาพอ้างอิง</button>
+          </div>
+        </div>
+
+        <!-- Color Palette Bar -->
+        <div class="card" style="margin-bottom:22px;">
+          <div class="card-header" style="margin-bottom:12px;">
+            <div>
+              <h3 class="card-title">🎨 โทนสีประจำงาน (Wedding Color Palette)</h3>
+              <div class="card-subtitle">คลิกที่วงกลมสีเพื่อคัดลอกโค้ดสี Hex ส่งให้ Vendor</div>
+            </div>
+          </div>
+          <div id="mood-palette-list" class="palette-strip"></div>
+        </div>
+
+        <!-- Categorized Filter Pills -->
+        <div class="toolbar">
+          <div class="filter-pills">
+            <button class="filter-pill active" onclick="App.filters.moodCategory='all'; document.querySelectorAll('#view-moodboard .filter-pill').forEach(b=>b.classList.remove('active')); this.classList.add('active'); App.renderMoodboard();">ทั้งหมด</button>
+            <button class="filter-pill" onclick="App.filters.moodCategory='fav'; document.querySelectorAll('#view-moodboard .filter-pill').forEach(b=>b.classList.remove('active')); this.classList.add('active'); App.renderMoodboard();">♥ รายการโปรด</button>
+            <button class="filter-pill" onclick="App.filters.moodCategory='ดอกไม้ & ซุ้มพิธี'; document.querySelectorAll('#view-moodboard .filter-pill').forEach(b=>b.classList.remove('active')); this.classList.add('active'); App.renderMoodboard();">🌸 ดอกไม้ &amp; ซุ้มพิธี</button>
+            <button class="filter-pill" onclick="App.filters.moodCategory='การตกแต่งเวที & โต๊ะอาหาร'; document.querySelectorAll('#view-moodboard .filter-pill').forEach(b=>b.classList.remove('active')); this.classList.add('active'); App.renderMoodboard();">✨ ตกแต่งเวที &amp; โต๊ะ</button>
+            <button class="filter-pill" onclick="App.filters.moodCategory='ชุดเจ้าสาว & เจ้าบ่าว'; document.querySelectorAll('#view-moodboard .filter-pill').forEach(b=>b.classList.remove('active')); this.classList.add('active'); App.renderMoodboard();">👗 ชุดบ่าวสาว</button>
+            <button class="filter-pill" onclick="App.filters.moodCategory='เค้ก & แคเทอริ่ง'; document.querySelectorAll('#view-moodboard .filter-pill').forEach(b=>b.classList.remove('active')); this.classList.add('active'); App.renderMoodboard();">🎂 เค้ก &amp; แคเทอริ่ง</button>
+            <button class="filter-pill" onclick="App.filters.moodCategory='ภาพถ่าย & วิดีโอ'; document.querySelectorAll('#view-moodboard .filter-pill').forEach(b=>b.classList.remove('active')); this.classList.add('active'); App.renderMoodboard();">📸 ภาพถ่าย &amp; วิดีโอ</button>
+            <button class="filter-pill" onclick="App.filters.moodCategory='ของชำร่วย & การ์ด'; document.querySelectorAll('#view-moodboard .filter-pill').forEach(b=>b.classList.remove('active')); this.classList.add('active'); App.renderMoodboard();">💌 ของชำร่วย &amp; การ์ด</button>
+          </div>
+          <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" class="search-input" placeholder="ค้นหาไอเดีย หรือโน้ตบรีฟ..." oninput="App.filters.moodSearch=this.value; App.renderMoodboard();" />
+          </div>
+        </div>
+
+        <!-- Inspiration Gallery Grid -->
+        <div id="mood-gallery-grid" class="moodboard-grid"></div>
+      </section>
+
+      <!-- ====================================================================
+           VIEW 3: VENDOR WORKSPACE (Categorized with Slips, Photos & Deadlines)
+           ==================================================================== -->
+      <section id="view-vendors" class="view-section">
+        <div class="page-header">
+          <div>
+            <div class="page-eyebrow">Suppliers &amp; Quotations Management</div>
+            <h2 class="page-title">Vendor Workspace &amp; สลิปการชำระเงิน</h2>
+            <p class="page-subtitle">แยกหมวดหมู่ชัดเจน แนบรูปภาพผลงานและสลิปโอนเงิน ติดตามยอดมัดจำ คงเหลือ และวันสิ้นสุดการชำระ</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-primary" onclick="App.openVendorModal()">+ เพิ่มผู้ให้บริการใหม่</button>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <div class="filter-pills">
+            <button class="filter-pill active" onclick="App.filters.vendorCategory='all'; document.querySelectorAll('#view-vendors .filter-pill').forEach(b=>b.classList.remove('active')); this.classList.add('active'); App.renderVendors();">ทุกหมวดหมู่</button>
+            <button class="filter-pill" onclick="App.filters.vendorCategory='สถานที่ & แคเทอริ่ง'; document.querySelectorAll('#view-vendors .filter-pill').forEach(b=>b.classList.remove('active')); this.classList.add('active'); App.renderVendors();">สถานที่ &amp; อาหาร</button>
+            <button class="filter-pill" onclick="App.filters.vendorCategory='ดอกไม้ & การตกแต่ง'; document.querySelectorAll('#view-vendors .filter-pill').forEach(b=>b.classList.remove('active')); this.classList.add('active'); App.renderVendors();">ดอกไม้ &amp; ตกแต่ง</button>
+            <button class="filter-pill" onclick="App.filters.vendorCategory='ชุดแต่งงาน & สูท'; document.querySelectorAll('#view-vendors .filter-pill').forEach(b=>b.classList.remove('active')); this.classList.add('active'); App.renderVendors();">ชุดแต่งงาน</button>
+            <button class="filter-pill" onclick="App.filters.vendorCategory='ช่างภาพ & ซีเนม่า'; document.querySelectorAll('#view-vendors .filter-pill').forEach(b=>b.classList.remove('active')); this.classList.add('active'); App.renderVendors();">ช่างภาพ</button>
+            <button class="filter-pill" onclick="App.filters.vendorCategory='ช่างแต่งหน้า & ทำผม'; document.querySelectorAll('#view-vendors .filter-pill').forEach(b=>b.classList.remove('active')); this.classList.add('active'); App.renderVendors();">แต่งหน้าทำผม</button>
+          </div>
+          <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" class="search-input" placeholder="ค้นหาชื่อร้าน หมวดหมู่ ผู้ติดต่อ หรือโน้ต..." oninput="App.filters.vendorSearch=this.value; App.renderVendors();" />
+          </div>
+        </div>
+
+        <!-- Categorized Vendor Groups -->
+        <div id="vendor-categorized-container"></div>
+      </section>
+
+      <!-- ====================================================================
+           VIEW 4: CHECKLIST & TIMELINE (10 Granular Stages)
+           ==================================================================== -->
+      <section id="view-checklist" class="view-section">
+        <div class="page-header">
+          <div>
+            <div class="page-eyebrow">10-Stage Milestone Planning</div>
+            <h2 class="page-title">Wedding Checklist &amp; Timeline</h2>
+            <p class="page-subtitle">แยกเป็นช่องๆ ตามช่วงเวลาอย่างชัดเจน: 12 เดือน, 6 เดือน, 3 เดือน, 1 เดือน, 2 สัปดาห์, 1 สัปดาห์, 5 วัน, 3 วัน, 1 วัน และวันงาน</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-primary" onclick="App.openTaskModal()">+ เพิ่มงานใหม่</button>
+          </div>
+        </div>
+
+        <!-- Overall Progress -->
+        <div class="card" style="margin-bottom:20px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <strong style="font-size:15px;">ความคืบหน้าการเตรียมงานทั้งหมด</strong>
+            <span id="chk-progress-label" style="font-size:13.5px; color:var(--blush-600); font-weight:600;">0%</span>
+          </div>
+          <div class="progress-track" style="height:10px;">
+            <div id="chk-progress-bar" class="progress-fill sage" style="width:0%"></div>
+          </div>
+        </div>
+
+        <!-- 10 Stages Selector Pills -->
+        <div id="checklist-stage-pills" class="stage-timeline-nav"></div>
+
+        <div id="checklist-container"></div>
+      </section>
+
+      <!-- ====================================================================
+           VIEW 5: GUEST LIST & REAL SEATING PLAN IMAGE
+           ==================================================================== -->
+      <section id="view-guests" class="view-section">
+        <div class="page-header">
+          <div>
+            <div class="page-eyebrow">Seating &amp; Registration</div>
+            <h2 class="page-title">Guest List &amp; ผังที่นั่งวันจริง</h2>
+            <p class="page-subtitle">อัปโหลดรูปผังที่นั่งจริงของสถานที่/โรงแรม และจัดการรายชื่อแขกพร้อมโต๊ะอาหาร</p>
+          </div>
+          <div class="page-actions">
+            <label class="btn btn-secondary" style="margin:0;">
+              🪑 อัปโหลดรูปผังที่นั่งวันจริง
+              <input type="file" accept="image/*" style="display:none;" onchange="App.handleSeatingPlanUpload(event)" />
+            </label>
+            <button class="btn btn-secondary" onclick="App.exportGuestsCSV()">📥 Export CSV</button>
+            <button class="btn btn-primary" onclick="App.openGuestModal()">+ เพิ่มรายชื่อแขก</button>
+          </div>
+        </div>
+
+        <!-- Real Seating Plan Image Box -->
+        <div class="seating-real-plan-box">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+            <div style="text-align:left;">
+              <h3 style="font-family:var(--font-serif); font-size:22px; font-weight:700; color:var(--text-primary);">
+                🗺️ ผังที่นั่งและแผนผังห้องจัดเลี้ยงวันจริง (Floor Plan)
+              </h3>
+              <p style="font-size:12.5px; color:var(--text-muted);">รูปภาพผังจริงจากโรงแรม/สถานที่จัดงาน คลิกที่รูปภาพเพื่อเปิดดูขนาดใหญ่เต็มจอ</p>
+            </div>
+            <label class="btn btn-soft btn-sm" style="margin:0;">
+              📷 เปลี่ยนรูปผังที่นั่ง
+              <input type="file" accept="image/*" style="display:none;" onchange="App.handleSeatingPlanUpload(event)" />
+            </label>
+          </div>
+          <div id="seating-real-plan-slot"></div>
+        </div>
+
+        <!-- Guest KPI Strip -->
+        <div class="kpi-grid" style="margin-bottom:22px;">
+          <div class="card" style="padding:18px;">
+            <div class="kpi-label">ยืนยันมาร่วมงานแล้ว</div>
+            <div id="gst-sum-confirmed" class="kpi-value" style="color:var(--status-success-text); margin-top:4px;">0 ที่นั่ง</div>
+          </div>
+          <div class="card" style="padding:18px;">
+            <div class="kpi-label">รอตอบรับ (Pending RSVP)</div>
+            <div id="gst-sum-pending" class="kpi-value" style="color:var(--status-warning-text); margin-top:4px;">0 ที่นั่ง</div>
+          </div>
+          <div class="card" style="padding:18px;">
+            <div class="kpi-label">ไม่สะดวกมาร่วมงาน</div>
+            <div id="gst-sum-declined" class="kpi-value" style="color:var(--status-danger-text); margin-top:4px;">0 รายชื่อ</div>
+          </div>
+          <div class="card" style="padding:18px;">
+            <div class="kpi-label">ยอดรวมที่ต้องสำรองที่นั่ง</div>
+            <div id="gst-sum-total" class="kpi-value" style="color:var(--blush-600); margin-top:4px;">0 ที่นั่ง</div>
+          </div>
+        </div>
+
+        <!-- Table Allocation & Seating Suite -->
+        <div class="card" style="margin-bottom:22px;">
+          <div class="card-header" style="margin-bottom:12px; flex-wrap:wrap; gap:12px;">
+            <div>
+              <h3 class="card-title">🪑 จัดโต๊ะที่นั่งแขก &amp; กำหนดรายชื่อ (Table Management)</h3>
+              <div id="table-summary-subtitle" class="card-subtitle">คำนวณจำนวนที่นั่งรายโต๊ะ เพิ่มหรือลดจำนวนโต๊ะ และระบุชื่อคนนั่งได้อิสระ</div>
+            </div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <button class="btn btn-secondary btn-sm" onclick="App.addQuickTable()">⚡ +1 โต๊ะด่วน</button>
+              <button class="btn btn-primary btn-sm" onclick="App.openTableModal()">+ เพิ่มโต๊ะใหม่</button>
+            </div>
+          </div>
+          <div id="guest-seating-grid" class="table-cards-grid"></div>
+        </div>
+
+        <!-- Guest Roster Table -->
+        <div class="toolbar">
+          <div class="filter-pills">
+            <button class="filter-pill active" onclick="App.filters.guestRsvp='all'; document.querySelectorAll('#view-guests .filter-pill').forEach(b=>b.classList.remove('active')); this.classList.add('active'); App.renderGuests(window.weddingStore.getSummary());">ทั้งหมด</button>
+            <button class="filter-pill" onclick="App.filters.guestRsvp='ยืนยันมาร่วมงาน'; document.querySelectorAll('#view-guests .filter-pill').forEach(b=>b.classList.remove('active')); this.classList.add('active'); App.renderGuests(window.weddingStore.getSummary());">✓ ยืนยันแล้ว</button>
+            <button class="filter-pill" onclick="App.filters.guestRsvp='รอตอบรับ'; document.querySelectorAll('#view-guests .filter-pill').forEach(b=>b.classList.remove('active')); this.classList.add('active'); App.renderGuests(window.weddingStore.getSummary());">⏳ รอตอบรับ</button>
+            <button class="filter-pill" onclick="App.filters.guestRsvp='ไม่สะดวกมาร่วม'; document.querySelectorAll('#view-guests .filter-pill').forEach(b=>b.classList.remove('active')); this.classList.add('active'); App.renderGuests(window.weddingStore.getSummary());">✕ ไม่สะดวก</button>
+          </div>
+          <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" class="search-input" placeholder="ค้นหาชื่อแขก โต๊ะ กลุ่ม..." oninput="App.filters.guestSearch=this.value; App.renderGuests(window.weddingStore.getSummary());" />
+          </div>
+        </div>
+
+        <div class="card" style="padding:0; overflow:hidden;">
+          <div class="table-responsive">
+            <table class="luxury-table">
+              <thead>
+                <tr>
+                  <th>ชื่อแขก / เบอร์ติดต่อ</th>
+                  <th>ฝ่าย</th>
+                  <th>กลุ่มความสัมพันธ์</th>
+                  <th>การตอบรับ (RSVP)</th>
+                  <th>จำนวนที่นั่ง</th>
+                  <th>โต๊ะที่นั่ง</th>
+                  <th>อาหาร / แพ้อาหาร</th>
+                  <th>จัดการ</th>
+                </tr>
+              </thead>
+              <tbody id="guest-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           VIEW 6: BUDGET TRACKER (Categorized with Multi-Slip Uploads)
+           ==================================================================== -->
+      <section id="view-budget" class="view-section">
+        <div class="page-header">
+          <div>
+            <div class="page-eyebrow">Financial Ledger &amp; Multi-Slip Receipts</div>
+            <h2 class="page-title">Budget Tracker &amp; สลิปโอนเงิน</h2>
+            <p class="page-subtitle">แยกหมวดหมู่งบประมาณชัดเจน เพิ่มสลิปโอนเงินได้มากกว่า 1 รูป และแก้ไขข้อมูลได้ตลอดเวลา</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-secondary" onclick="App.openWeddingInfoModal()">✎ ปรับงบประมาณรวม</button>
+            <button class="btn btn-primary" onclick="App.openBudgetModal()">+ เพิ่มรายการค่าใช้จ่าย &amp; สลิป</button>
+          </div>
+        </div>
+
+        <!-- Budget KPI Strip -->
+        <div class="kpi-grid" style="margin-bottom:22px;">
+          <div class="card" style="padding:18px;">
+            <div class="kpi-label">งบประมาณตั้งไว้รวม</div>
+            <div id="bdg-cap" class="kpi-value" style="margin-top:4px;">฿0</div>
+          </div>
+          <div class="card" style="padding:18px;">
+            <div class="kpi-label">ค่าใช้จ่ายจริงรวม (Actual)</div>
+            <div id="bdg-actual" class="kpi-value" style="color:var(--blush-600); margin-top:4px;">฿0</div>
+          </div>
+          <div class="card" style="padding:18px;">
+            <div class="kpi-label">ชำระแล้วรวม (มัดจำ + งวดเพิ่ม)</div>
+            <div id="bdg-paid" class="kpi-value" style="color:var(--status-success-text); margin-top:4px;">฿0</div>
+            <div id="bdg-deposit-sub" style="font-size:11.5px; color:var(--text-muted); margin-top:2px;">เป็นเงินมัดจำ ฿0</div>
+          </div>
+          <div class="card" style="padding:18px;">
+            <div class="kpi-label">ยอดค้างชำระคงเหลือ (Unpaid)</div>
+            <div id="bdg-unpaid" class="kpi-value" style="color:var(--status-danger-text); margin-top:4px;">฿0</div>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <div class="filter-pills">
+            <button class="filter-pill active" onclick="App.filters.budgetCategory='all'; document.querySelectorAll('#view-budget .filter-pill').forEach(b=>b.classList.remove('active')); this.classList.add('active'); App.renderBudget(window.weddingStore.getSummary());">ทุกหมวดหมู่</button>
+            <button class="filter-pill" onclick="App.filters.budgetCategory='สถานที่ & แคเทอริ่ง'; document.querySelectorAll('#view-budget .filter-pill').forEach(b=>b.classList.remove('active')); this.classList.add('active'); App.renderBudget(window.weddingStore.getSummary());">สถานที่ &amp; อาหาร</button>
+            <button class="filter-pill" onclick="App.filters.budgetCategory='ดอกไม้ & การตกแต่ง'; document.querySelectorAll('#view-budget .filter-pill').forEach(b=>b.classList.remove('active')); this.classList.add('active'); App.renderBudget(window.weddingStore.getSummary());">ดอกไม้ &amp; ตกแต่ง</button>
+            <button class="filter-pill" onclick="App.filters.budgetCategory='ชุดแต่งงาน & สูท'; document.querySelectorAll('#view-budget .filter-pill').forEach(b=>b.classList.remove('active')); this.classList.add('active'); App.renderBudget(window.weddingStore.getSummary());">ชุดแต่งงาน</button>
+            <button class="filter-pill" onclick="App.filters.budgetCategory='ช่างภาพ & ซีเนม่า'; document.querySelectorAll('#view-budget .filter-pill').forEach(b=>b.classList.remove('active')); this.classList.add('active'); App.renderBudget(window.weddingStore.getSummary());">ช่างภาพ</button>
+          </div>
+          <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" class="search-input" placeholder="ค้นหารายการ หรือร้านค้า..." oninput="App.filters.budgetSearch=this.value; App.renderBudget(window.weddingStore.getSummary());" />
+          </div>
+        </div>
+
+        <!-- Categorized Budget Items -->
+        <div id="budget-categorized-container"></div>
+      </section>
+
+      <!-- ====================================================================
+           VIEW 7: RUN DOWN (Chronological with Status, Songs & Notes)
+           ==================================================================== -->
+      <section id="view-rundown" class="view-section">
+        <div class="page-header">
+          <div>
+            <div class="page-eyebrow">Master Day-of Timeline</div>
+            <h2 class="page-title">Run down กำหนดการวันงาน</h2>
+            <p class="page-subtitle">เรียงลำดับเวลาก่อน-หลังอัตโนมัติ ระบุสถานะ ผู้รับผิดชอบ เบอร์ติดต่อ สถานที่ เพลงเปิดตัว และโน้ตกำกับคิว</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-primary" onclick="App.openRundownModal()">+ เพิ่มกิจกรรมใน Rundown</button>
+          </div>
+        </div>
+
+        <!-- Session Tabs -->
+        <div class="session-tabs">
+          <button class="session-tab active" onclick="App.filters.rundownSession='all'; document.querySelectorAll('.session-tab').forEach(b=>b.classList.remove('active')); this.classList.add('active'); App.renderRundown();">ทั้งหมด (All Sessions)</button>
+          <button class="session-tab" onclick="App.filters.rundownSession='morning'; document.querySelectorAll('.session-tab').forEach(b=>b.classList.remove('active')); this.classList.add('active'); App.renderRundown();">☀️ พิธีเช้า</button>
+          <button class="session-tab" onclick="App.filters.rundownSession='evening'; document.querySelectorAll('.session-tab').forEach(b=>b.classList.remove('active')); this.classList.add('active'); App.renderRundown();">🌙 งานเลี้ยงฉลองเย็น</button>
+        </div>
+
+        <div class="toolbar">
+          <div class="filter-pills">
+            <button class="filter-pill active" onclick="App.filters.rundownStatus='all'; document.querySelectorAll('#view-rundown .filter-pill').forEach(b=>b.classList.remove('active')); this.classList.add('active'); App.renderRundown();">ทุกสถานะ</button>
+            <button class="filter-pill" onclick="App.filters.rundownStatus='เตรียมพร้อม'; document.querySelectorAll('#view-rundown .filter-pill').forEach(b=>b.classList.remove('active')); this.classList.add('active'); App.renderRundown();">เตรียมพร้อม</button>
+            <button class="filter-pill" onclick="App.filters.rundownStatus='กำลังดำเนินการ'; document.querySelectorAll('#view-rundown .filter-pill').forEach(b=>b.classList.remove('active')); this.classList.add('active'); App.renderRundown();">⏳ กำลังดำเนินการ</button>
+            <button class="filter-pill" onclick="App.filters.rundownStatus='เสร็จสิ้น'; document.querySelectorAll('#view-rundown .filter-pill').forEach(b=>b.classList.remove('active')); this.classList.add('active'); App.renderRundown();">✓ เสร็จสิ้น</button>
+          </div>
+          <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" class="search-input" placeholder="ค้นหากิจกรรม เพลง หรือผู้รับผิดชอบ..." oninput="App.filters.rundownSearch=this.value; App.renderRundown();" />
+          </div>
+        </div>
+
+        <!-- Chronological Rundown Cards -->
+        <div id="rundown-list-container"></div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Mobile Bottom Nav -->
+  <nav class="mobile-bottom-nav">
+    <button class="mobile-nav-btn active" data-nav="dashboard">
+      <span class="nav-icon">✨</span>
+      <span>ภาพรวม</span>
+    </button>
+    <button class="mobile-nav-btn" data-nav="moodboard">
+      <span class="nav-icon">🎨</span>
+      <span>Moodboard</span>
+    </button>
+    <button class="mobile-nav-btn" data-nav="vendors">
+      <span class="nav-icon">🏛️</span>
+      <span>Vendors</span>
+    </button>
+    <button class="mobile-nav-btn" data-nav="checklist">
+      <span class="nav-icon">📋</span>
+      <span>Checklist</span>
+    </button>
+    <button class="mobile-nav-btn" data-nav="guests">
+      <span class="nav-icon">🥂</span>
+      <span>แขก &amp; ผัง</span>
+    </button>
+    <button class="mobile-nav-btn" data-nav="budget">
+      <span class="nav-icon">💎</span>
+      <span>งบประมาณ</span>
+    </button>
+    <button class="mobile-nav-btn" data-nav="rundown">
+      <span class="nav-icon">⏳</span>
+      <span>Rundown</span>
+    </button>
+  </nav>
+
+  <!-- ======================================================================
+       MODALS & LIGHTBOX
+       ====================================================================== -->
+
+  <!-- Fullscreen Lightbox Modal -->
+  <div id="lightbox-modal" class="lightbox-backdrop" onclick="App.closeLightbox()">
+    <button class="lightbox-close" onclick="App.closeLightbox()">✕</button>
+    <img id="lightbox-img" class="lightbox-img" src="" onclick="event.stopPropagation()" alt="รูปขยาย" />
+  </div>
+
+  <!-- 1. Wedding Info & Photos Modal -->
+  <div id="modal-wedding-info" class="modal-backdrop">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title">ตั้งค่าข้อมูลงานแต่งงาน &amp; รูปภาพ</h3>
+        <button class="btn-icon" onclick="App.closeModal('modal-wedding-info')">✕</button>
+      </div>
+      <form onsubmit="App.saveWeddingInfoForm(event)">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">ชื่อเจ้าสาว *</label>
+            <input type="text" id="wi-bride" class="form-input" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">ชื่อเจ้าบ่าว *</label>
+            <input type="text" id="wi-groom" class="form-input" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">วันจัดงานมงคลสมรส *</label>
+            <input type="date" id="wi-date" class="form-input" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">เวลาฤกษ์เช้า / งานเลี้ยงเย็น</label>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+              <input type="time" id="wi-time" class="form-input" />
+              <input type="time" id="wi-reception" class="form-input" />
+            </div>
+          </div>
+          <div class="form-group full">
+            <label class="form-label">สถานที่จัดงาน (Venue) *</label>
+            <input type="text" id="wi-venue" class="form-input" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">ธีมงานแต่งงาน</label>
+            <input type="text" id="wi-theme" class="form-input" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Dress Code / โทนสี</label>
+            <input type="text" id="wi-dresscode" class="form-input" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">งบประมาณตั้งไว้รวม (บาท) *</label>
+            <input type="number" id="wi-budget" class="form-input" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">จำนวนแขกเป้าหมาย (ท่าน)</label>
+            <input type="number" id="wi-guests" class="form-input" />
+          </div>
+          <div class="form-group full">
+            <label class="form-label">แฮชแท็กงานแต่ง (#Hashtag)</label>
+            <input type="text" id="wi-hashtag" class="form-input" />
+          </div>
+
+          <!-- Photo & Logo Uploads -->
+          <div class="form-group">
+            <label class="form-label">🖼️ อัปโหลดรูปภาพหน้าปก Dashboard</label>
+            <input type="file" accept="image/*" class="form-input" style="padding:6px;" onchange="App.handleCoverUpload(event)" />
+            <input type="hidden" id="wi-cover-url" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">💍 อัปโหลดรูปโลโก้ / ตราสัญลักษณ์งานแต่ง</label>
+            <input type="file" accept="image/*" class="form-input" style="padding:6px;" onchange="App.handleLogoUpload(event)" />
+            <input type="hidden" id="wi-logo-url" />
+          </div>
+
+          <div class="form-group full">
+            <label class="form-label">คอนเซปต์และหมายเหตุภาพรวม</label>
+            <textarea id="wi-note" class="form-textarea" rows="2"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="App.closeModal('modal-wedding-info')">ยกเลิก</button>
+          <button type="submit" class="btn btn-primary">บันทึกข้อมูลงานแต่ง</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. Vendor Modal (with Multi-Slips & Images) -->
+  <div id="modal-vendor" class="modal-backdrop">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="vendor-modal-title" class="modal-title">เพิ่มผู้ให้บริการ &amp; สลิปการชำระ</h3>
+        <button class="btn-icon" onclick="App.closeModal('modal-vendor')">✕</button>
+      </div>
+      <form onsubmit="App.saveVendorForm(event)">
+        <input type="hidden" id="ven-id" />
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">ชื่อบริษัท / ร้านผู้ให้บริการ *</label>
+            <input type="text" id="ven-name" class="form-input" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">หมวดหมู่บริการ *</label>
+            <select id="ven-cat" class="form-select">
+              <option value="สถานที่ & แคเทอริ่ง">สถานที่ &amp; แคเทอริ่ง</option>
+              <option value="ดอกไม้ & การตกแต่ง">ดอกไม้ &amp; การตกแต่ง</option>
+              <option value="ชุดแต่งงาน & สูท">ชุดแต่งงาน &amp; สูท</option>
+              <option value="ช่างภาพ & ซีเนม่า">ช่างภาพ &amp; ซีเนม่า</option>
+              <option value="ช่างแต่งหน้า & ทำผม">ช่างแต่งหน้า &amp; ทำผม</option>
+              <option value="การ์ด & ของชำร่วย">การ์ด &amp; ของชำร่วย</option>
+              <option value="ดนตรี & พิธีกร">ดนตรี &amp; พิธีกร</option>
+              <option value="อื่นๆ">อื่นๆ</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">ชื่อผู้ประสานงาน</label>
+            <input type="text" id="ven-contact" class="form-input" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">เบอร์โทรศัพท์ติดต่อ</label>
+            <input type="text" id="ven-phone" class="form-input" placeholder="08X-XXX-XXXX" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Line ID / Instagram / Facebook</label>
+            <input type="text" id="ven-line" class="form-input" placeholder="@..." />
+          </div>
+          <div class="form-group">
+            <label class="form-label">เลขที่ใบเสนอราคา (Quotation Ref)</label>
+            <input type="text" id="ven-qref" class="form-input" placeholder="QT-2026-XXXX" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">ราคาเสนอสุทธิ (บาท) *</label>
+            <input type="number" id="ven-price" class="form-input" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">ยอดเงินมัดจำที่จ่ายแล้ว (บาท)</label>
+            <input type="number" id="ven-deposit" class="form-input" value="0" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">วันสิ้นสุดการชำระเงิน (Payment Deadline)</label>
+            <input type="date" id="ven-deadline" class="form-input" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">สถานะการอนุมัติ *</label>
+            <select id="ven-status" class="form-select">
+              <option value="รอดำเนินการ (Pending)">⏳ รอดำเนินการ / กำลังเปรียบเทียบ</option>
+              <option value="นัดคุยรายละเอียด (Negotiating)">💬 นัดคุยรายละเอียด / ต่อรองราคา</option>
+              <option value="อนุมัติแล้ว (Approved)">✓ อนุมัติแล้ว (Approved)</option>
+              <option value="ปฏิเสธ (Declined)">✕ ปฏิเสธ / ไม่ได้เลือก</option>
+            </select>
+          </div>
+
+          <!-- Multi-Image & Multi-Slip Uploads -->
+          <div class="form-group">
+            <label class="form-label">📷 แนบรูปภาพตัวอย่างผลงาน / ใบเสนอราคา</label>
+            <input type="file" accept="image/*" multiple class="form-input" style="padding:6px;" onchange="App.handleVendorMultiUpload(event, 'image')" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">🧾 แนบสลิปโอนเงิน (ใส่ได้หลายรูป)</label>
+            <input type="file" accept="image/*" multiple class="form-input" style="padding:6px;" onchange="App.handleVendorMultiUpload(event, 'slip')" />
+          </div>
+
+          <div class="form-group full">
+            <label class="form-label">รูปภาพและสลิปที่แนบอยู่ (คลิก ✕ เพื่อลบ):</label>
+            <div id="ven-modal-slips-preview" class="slips-grid"></div>
+          </div>
+
+          <div class="form-group full">
+            <label class="form-label">โน้ตและรายละเอียดข้อตกลง</label>
+            <textarea id="ven-notes" class="form-textarea" rows="2"></textarea>
+          </div>
+          <div class="form-group full">
+            <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:13px;">
+              <input type="checkbox" id="ven-sync-budget" checked />
+              <span>ซิงก์ราคา ยอดมัดจำ และสลิปเข้าระบบ <strong>Budget Tracker</strong> อัตโนมัติ</span>
+            </label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="App.closeModal('modal-vendor')">ยกเลิก</button>
+          <button type="submit" class="btn btn-primary">บันทึกผู้ให้บริการ</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 3. Rundown Item Modal -->
+  <div id="modal-rundown" class="modal-backdrop">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="rundown-modal-title" class="modal-title">เพิ่มกิจกรรมในตารางรันคิว</h3>
+        <button class="btn-icon" onclick="App.closeModal('modal-rundown')">✕</button>
+      </div>
+      <form onsubmit="App.saveRundownForm(event)">
+        <input type="hidden" id="ros-id" />
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">ช่วงพิธีการ *</label>
+            <select id="ros-session" class="form-select">
+              <option value="morning">☀️ พิธีเช้า</option>
+              <option value="evening">🌙 งานเลี้ยงฉลองมงคลสมรสช่วงเย็น</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">สถานะของงาน *</label>
+            <select id="ros-status-input" class="form-select">
+              <option value="เตรียมพร้อม">เตรียมพร้อม</option>
+              <option value="กำลังดำเนินการ">กำลังดำเนินการ</option>
+              <option value="เสร็จสิ้น">เสร็จสิ้น</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">เวลาเริ่มต้น (เช่น 07:09) *</label>
+            <input type="time" id="ros-start" class="form-input" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">เวลาสิ้นสุด (เช่น 07:49) *</label>
+            <input type="time" id="ros-end" class="form-input" required />
+          </div>
+          <div class="form-group full">
+            <label class="form-label">ชื่อกิจกรรม / ลำดับพิธีการ *</label>
+            <input type="text" id="ros-title-input" class="form-input" required placeholder="เช่น เดินเปิดตัวคู่บ่าวสาว (Grand Entrance)" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">ผู้รับผิดชอบ</label>
+            <input type="text" id="ros-lead" class="form-input" placeholder="เช่น ทีมรันคิว, คุณอาร์ม" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">เบอร์โทรศัพท์ผู้รับผิดชอบ</label>
+            <input type="text" id="ros-phone" class="form-input" placeholder="08X-XXX-XXXX" />
+          </div>
+          <div class="form-group full">
+            <label class="form-label">สถานที่จัดกิจกรรม</label>
+            <input type="text" id="ros-location" class="form-input" placeholder="เช่น เวทีใหญ่, Aisle ทางเดิน, ห้องกระจก" />
+          </div>
+          <div class="form-group full">
+            <label class="form-label">📝 โน้ตรายละเอียดสำคัญ (เพลงเปิดตัว, Flower girl, คิวงาน) *</label>
+            <textarea id="ros-notes-input" class="form-textarea" rows="3" placeholder="เช่น เปิดตัวเจ้าบ่าวใช้เพลง... เปิดตัวเจ้าสาวใช้เพลง... มี Flower Girl 2 คนเดินโรยดอกไม้นำหน้า"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="App.closeModal('modal-rundown')">ยกเลิก</button>
+          <button type="submit" class="btn btn-primary">บันทึกกำหนดการรันคิว</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 4. Budget Item Modal (with Multi-Slip Uploads) -->
+  <div id="modal-budget" class="modal-backdrop">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="budget-modal-title" class="modal-title">เพิ่มรายการงบประมาณ &amp; สลิป</h3>
+        <button class="btn-icon" onclick="App.closeModal('modal-budget')">✕</button>
+      </div>
+      <form onsubmit="App.saveBudgetForm(event)">
+        <input type="hidden" id="bdg-id" />
+        <div class="form-grid">
+          <div class="form-group full">
+            <label class="form-label">ชื่อรายการค่าใช้จ่าย *</label>
+            <input type="text" id="bdg-title" class="form-input" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">หมวดหมู่ *</label>
+            <select id="bdg-cat" class="form-select">
+              <option value="สถานที่ & แคเทอริ่ง">สถานที่ &amp; แคเทอริ่ง</option>
+              <option value="ดอกไม้ & การตกแต่ง">ดอกไม้ &amp; การตกแต่ง</option>
+              <option value="ชุดแต่งงาน & สูท">ชุดแต่งงาน &amp; สูท</option>
+              <option value="ช่างภาพ & ซีเนม่า">ช่างภาพ &amp; ซีเนม่า</option>
+              <option value="ช่างแต่งหน้า & ทำผม">ช่างแต่งหน้า &amp; ทำผม</option>
+              <option value="การ์ด & ของชำร่วย">การ์ด &amp; ของชำร่วย</option>
+              <option value="ดนตรี & พิธีการ">ดนตรี &amp; พิธีการ</option>
+              <option value="แหวน & พิธีเช้า">แหวน &amp; พิธีเช้า</option>
+              <option value="อื่นๆ">อื่นๆ</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">ผู้ให้บริการ / ร้านค้า</label>
+            <input type="text" id="bdg-vendor" class="form-input" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">งบที่ตั้งไว้ (บาท)</label>
+            <input type="number" id="bdg-est" class="form-input" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">ค่าใช้จ่ายจริง (บาท) *</label>
+            <input type="number" id="bdg-act" class="form-input" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">เงินมัดจำที่จ่ายแล้ว (บาท)</label>
+            <input type="number" id="bdg-dep" class="form-input" value="0" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">ชำระเพิ่มงวดอื่นๆ แล้ว (บาท)</label>
+            <input type="number" id="bdg-add" class="form-input" value="0" />
+          </div>
+          <div class="form-group full">
+            <label class="form-label">วันครบกำหนดชำระงวดถัดไป</label>
+            <input type="date" id="bdg-due" class="form-input" />
+          </div>
+
+          <!-- Multi-slip upload for budget -->
+          <div class="form-group full">
+            <label class="form-label">🧾 แนบสลิปโอนเงิน (ใส่ได้มากกว่า 1 รูป)</label>
+            <input type="file" accept="image/*" multiple class="form-input" style="padding:6px;" onchange="App.handleBudgetSlipsUpload(event)" />
+            <div id="bdg-modal-slips-preview" class="slips-grid"></div>
+          </div>
+
+          <div class="form-group full">
+            <label class="form-label">หมายเหตุการชำระเงิน</label>
+            <textarea id="bdg-notes" class="form-textarea" rows="2"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="App.closeModal('modal-budget')">ยกเลิก</button>
+          <button type="submit" class="btn btn-primary">บันทึกรายการงบประมาณ</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 5. Checklist Task Modal (10 Stages) -->
+  <div id="modal-task" class="modal-backdrop">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="chk-modal-title" class="modal-title">เพิ่มงานใน Checklist &amp; Timeline</h3>
+        <button class="btn-icon" onclick="App.closeModal('modal-task')">✕</button>
+      </div>
+      <form onsubmit="App.saveTaskForm(event)">
+        <input type="hidden" id="chk-id" />
+        <div class="form-grid">
+          <div class="form-group full">
+            <label class="form-label">ชื่องานที่ต้องทำ *</label>
+            <input type="text" id="chk-title" class="form-input" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">หมวดหมู่งาน</label>
+            <select id="chk-cat" class="form-select">
+              <option value="สถานที่ & แคเทอริ่ง">สถานที่ &amp; แคเทอริ่ง</option>
+              <option value="ดอกไม้ & การตกแต่ง">ดอกไม้ &amp; การตกแต่ง</option>
+              <option value="ชุดแต่งงาน & สูท">ชุดแต่งงาน &amp; สูท</option>
+              <option value="ช่างภาพ & ซีเนม่า">ช่างภาพ &amp; ซีเนม่า</option>
+              <option value="การ์ด & ของชำร่วย">การ์ด &amp; ของชำร่วย</option>
+              <option value="รายชื่อแขก & จัดโต๊ะ">รายชื่อแขก &amp; จัดโต๊ะ</option>
+              <option value="พิธีการ & รันคิว">พิธีการ &amp; รันคิว</option>
+              <option value="การเงิน & พิธีเช้า">การเงิน &amp; พิธีเช้า</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">ช่วงเวลาไทม์ไลน์ (10 ช่วงเวลา) *</label>
+            <select id="chk-timeframe" class="form-select">
+              <option value="12 เดือนก่อนงาน">12 เดือนก่อนงาน</option>
+              <option value="6 เดือนก่อนงาน">6 เดือนก่อนงาน</option>
+              <option value="3 เดือนก่อนงาน">3 เดือนก่อนงาน</option>
+              <option value="1 เดือนก่อนงาน">1 เดือนก่อนงาน</option>
+              <option value="2 สัปดาห์ก่อนงาน">2 สัปดาห์ก่อนงาน</option>
+              <option value="1 สัปดาห์ก่อนงาน">1 สัปดาห์ก่อนงาน</option>
+              <option value="5 วันก่อนงาน">5 วันก่อนงาน</option>
+              <option value="3 วันก่อนงาน">3 วันก่อนงาน</option>
+              <option value="1 วันก่อนงาน">1 วันก่อนงาน</option>
+              <option value="วันงาน">วันงาน</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">ผู้รับผิดชอบ *</label>
+            <select id="chk-assignee" class="form-select">
+              <option value="ทำร่วมกัน">ทำร่วมกัน (บ่าว-สาว)</option>
+              <option value="เจ้าสาว">เจ้าสาว</option>
+              <option value="เจ้าบ่าว">เจ้าบ่าว</option>
+              <option value="ออแกไนซ์/แม่งาน">ออแกไนซ์/แม่งาน</option>
+              <option value="ครอบครัว">ครอบครัว</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">วันครบกำหนด (Due Date) *</label>
+            <input type="date" id="chk-duedate" class="form-input" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">ระดับความสำคัญ</label>
+            <select id="chk-priority" class="form-select">
+              <option value="สูง">สูง (High Priority)</option>
+              <option value="กลาง">กลาง (Medium)</option>
+              <option value="ต่ำ">ต่ำ (Low)</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label class="form-label">หมายเหตุรายละเอียด</label>
+            <textarea id="chk-notes" class="form-textarea" rows="2"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="App.closeModal('modal-task')">ยกเลิก</button>
+          <button type="submit" class="btn btn-primary">บันทึกรายการงาน</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 6. Guest Modal -->
+  <div id="modal-guest" class="modal-backdrop">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="guest-modal-title" class="modal-title">เพิ่มรายชื่อแขก &amp; ที่นั่ง</h3>
+        <button class="btn-icon" onclick="App.closeModal('modal-guest')">✕</button>
+      </div>
+      <form onsubmit="App.saveGuestForm(event)">
+        <input type="hidden" id="gst-id" />
+        <div class="form-grid">
+          <div class="form-group full">
+            <label class="form-label">ชื่อ-นามสกุล / ชื่อกลุ่มแขก *</label>
+            <input type="text" id="gst-name" class="form-input" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">แขกของฝ่าย *</label>
+            <select id="gst-side" class="form-select">
+              <option value="เจ้าสาว">ฝ่ายเจ้าสาว</option>
+              <option value="เจ้าบ่าว">ฝ่ายเจ้าบ่าว</option>
+              <option value="เพื่อนร่วมกัน">เพื่อนร่วมกัน</option>
+              <option value="VIP/ผู้ใหญ่">VIP / แขกผู้ใหญ่</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">กลุ่มความสัมพันธ์</label>
+            <input type="text" id="gst-group" class="form-input" placeholder="เช่น ครอบครัว, เพื่อนมหาลัย, ที่ทำงาน" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">สถานะการตอบรับ (RSVP) *</label>
+            <select id="gst-rsvp" class="form-select">
+              <option value="ยืนยันมาร่วมงาน">✓ ยืนยันมาร่วมงาน</option>
+              <option value="รอตอบรับ">⏳ รอตอบรับ</option>
+              <option value="ไม่สะดวกมาร่วม">✕ ไม่สะดวกมาร่วม</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">จำนวนที่นั่ง (Seats) *</label>
+            <input type="number" id="gst-seats" class="form-input" min="0" max="30" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">โต๊ะที่นั่ง (Table No.)</label>
+            <select id="gst-table" class="form-select"></select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">เบอร์ติดต่อ</label>
+            <input type="text" id="gst-phone" class="form-input" />
+          </div>
+          <div class="form-group full">
+            <label class="form-label">อาหารพิเศษ / แพ้อาหาร</label>
+            <input type="text" id="gst-dietary" class="form-input" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="App.closeModal('modal-guest')">ยกเลิก</button>
+          <button type="submit" class="btn btn-primary">บันทึกรายชื่อแขก</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 7. Moodboard Modal -->
+  <div id="modal-mood" class="modal-backdrop">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="mood-modal-title" class="modal-title">เพิ่มไอเดีย Moodboard</h3>
+        <button class="btn-icon" onclick="App.closeModal('modal-mood')">✕</button>
+      </div>
+      <form onsubmit="App.saveMoodForm(event)">
+        <input type="hidden" id="mood-id" />
+        <div class="form-grid">
+          <div class="form-group full">
+            <label class="form-label">หัวข้อไอเดีย *</label>
+            <input type="text" id="mood-title-input" class="form-input" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">หมวดหมู่สำหรับคุยกับ Vendor *</label>
+            <select id="mood-category-input" class="form-select">
+              <option value="ดอกไม้ & ซุ้มพิธี">ดอกไม้ &amp; ซุ้มพิธี</option>
+              <option value="การตกแต่งเวที & โต๊ะอาหาร">การตกแต่งเวที &amp; โต๊ะอาหาร</option>
+              <option value="ชุดเจ้าสาว & เจ้าบ่าว">ชุดเจ้าสาว &amp; เจ้าบ่าว</option>
+              <option value="เค้ก & แคเทอริ่ง">เค้ก &amp; แคเทอริ่ง</option>
+              <option value="ภาพถ่าย & วิดีโอ">ภาพถ่าย &amp; วิดีโอ</option>
+              <option value="ของชำร่วย & การ์ด">ของชำร่วย &amp; การ์ด</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">อัปโหลดรูปภาพจากเครื่อง</label>
+            <input type="file" accept="image/*" class="form-input" style="padding:6px;" onchange="App.handleMoodImageUpload(event)" />
+          </div>
+          <div class="form-group full">
+            <label class="form-label">หรือวางลิงก์รูปภาพ (Image URL)</label>
+            <input type="text" id="mood-img-input" class="form-input" />
+          </div>
+          <div class="form-group full">
+            <label class="form-label">ลิงก์อ้างอิง Pinterest / Instagram</label>
+            <input type="url" id="mood-pin-input" class="form-input" />
+          </div>
+          <div class="form-group full">
+            <label class="form-label">โน้ตบรีฟ Vendor (ความต้องการ ชนิดดอกไม้ โทนสี)</label>
+            <textarea id="mood-notes-input" class="form-textarea" rows="3"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="App.closeModal('modal-mood')">ยกเลิก</button>
+          <button type="submit" class="btn btn-primary">บันทึกไอเดีย</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 8. Swatch Modal -->
+  <div id="modal-swatch" class="modal-backdrop">
+    <div class="modal-dialog" style="max-width:420px;">
+      <div class="modal-header">
+        <h3 class="modal-title">เพิ่มโทนสีประจำงาน</h3>
+        <button class="btn-icon" onclick="App.closeModal('modal-swatch')">✕</button>
+      </div>
+      <form onsubmit="App.addSwatchPrompt(event)">
+        <div class="form-group">
+          <label class="form-label">เลือกสี (Color Picker)</label>
+          <input type="color" id="new-swatch-hex" value="#E8BEC7" style="width:100%; height:48px; border:1px solid var(--champagne-300); border-radius:12px; cursor:pointer;" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">ชื่อสี *</label>
+          <input type="text" id="new-swatch-name" class="form-input" required placeholder="เช่น Soft Peony Pink" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">การใช้งาน</label>
+          <input type="text" id="new-swatch-role" class="form-input" placeholder="เช่น ดอกไม้หลัก & การ์ดเชิญ" />
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="App.closeModal('modal-swatch')">ยกเลิก</button>
+          <button type="submit" class="btn btn-primary">เพิ่มโทนสี</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 9. Vendor Meeting Modal -->
+  <div id="modal-meeting" class="modal-backdrop">
+    <div class="modal-dialog" style="max-width:480px;">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title">บันทึกการประชุม Vendor</h3>
+          <div id="mt-vendor-name" style="font-size:13px; color:var(--blush-600);"></div>
+        </div>
+        <button class="btn-icon" onclick="App.closeModal('modal-meeting')">✕</button>
+      </div>
+      <form onsubmit="App.saveMeetingForm(event)">
+        <input type="hidden" id="mt-vendor-id" />
+        <div class="form-group">
+          <label class="form-label">วันที่ประชุม *</label>
+          <input type="date" id="mt-date" class="form-input" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">หัวข้อการประชุม *</label>
+          <input type="text" id="mt-topic" class="form-input" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">สรุปสิ่งที่ตกลงร่วมกัน *</label>
+          <textarea id="mt-summary" class="form-textarea" rows="3" required></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">สิ่งที่ต้องทำต่อ (Next Action / Follow-up)</label>
+          <input type="text" id="mt-next" class="form-input" />
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="App.closeModal('modal-meeting')">ยกเลิก</button>
+          <button type="submit" class="btn btn-primary">บันทึกการประชุม</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Add / Edit Table -->
+  <div id="modal-table" class="modal-backdrop">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="table-modal-title" class="modal-title">+ เพิ่มโต๊ะใหม่</h3>
+        <button class="btn-icon" onclick="App.closeModal('modal-table')">✕</button>
+      </div>
+      <form onsubmit="App.saveTableForm(event)">
+        <input type="hidden" id="tbl-id" />
+        <div class="form-grid">
+          <div class="form-group full">
+            <label class="form-label">ชื่อโต๊ะ / หมายเลขโต๊ะ *</label>
+            <input type="text" id="tbl-name" class="form-input" placeholder="เช่น โต๊ะ VIP-1, Table 5, โต๊ะเพื่อนเจ้าบ่าว" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">จำนวนที่นั่งสูงสุด (Capacity) *</label>
+            <input type="number" id="tbl-capacity" class="form-input" min="1" max="50" value="10" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">โซน / ตำแหน่งที่ตั้ง</label>
+            <input type="text" id="tbl-notes" class="form-input" placeholder="เช่น หน้าเวที, ริมหน้าต่าง, โซนครอบครัว" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="App.closeModal('modal-table')">ยกเลิก</button>
+          <button type="submit" class="btn btn-primary">บันทึกข้อมูลโต๊ะ</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Put / Assign People to Table -->
+  <div id="modal-seat-person" class="modal-backdrop">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div>
+          <h3 id="seat-person-modal-title" class="modal-title">ใส่ชื่อคนนั่งโต๊ะ</h3>
+          <div id="seat-person-modal-subtitle" style="font-size:12px; color:var(--text-muted); margin-top:2px;"></div>
+        </div>
+        <button class="btn-icon" onclick="App.closeModal('modal-seat-person')">✕</button>
+      </div>
+      
+      <!-- Option 1: Add New Person to this table -->
+      <div style="background:var(--bg-ivory); padding:16px; border-radius:var(--radius-md); border:1px solid var(--border-soft); margin-bottom:16px;">
+        <h4 style="font-size:13.5px; font-weight:600; color:var(--blush-600); margin-bottom:10px;">
+          ✨ วิธีที่ 1: พิมพ์ชื่อคนนั่งใหม่เข้าโต๊ะนี้ทันที
+        </h4>
+        <form onsubmit="App.saveSeatNewPersonForm(event)">
+          <input type="hidden" id="seat-target-table" />
+          <div class="form-grid">
+            <div class="form-group full">
+              <label class="form-label">ชื่อ-นามสกุล คนนั่ง *</label>
+              <input type="text" id="seat-new-name" class="form-input" placeholder="เช่น คุณสมชาย และครอบครัว" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">จำนวนที่นั่ง (คน) *</label>
+              <input type="number" id="seat-new-seats" class="form-input" min="1" max="20" value="1" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">ฝ่าย</label>
+              <select id="seat-new-side" class="form-select">
+                <option value="เจ้าสาว">ฝ่ายเจ้าสาว</option>
+                <option value="เจ้าบ่าว">ฝ่ายเจ้าบ่าว</option>
+                <option value="เพื่อนร่วมกัน">เพื่อนร่วมกัน</option>
+                <option value="VIP/ผู้ใหญ่">VIP / แขกผู้ใหญ่</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">เบอร์โทรติดต่อ</label>
+              <input type="text" id="seat-new-phone" class="form-input" placeholder="08x-xxx-xxxx" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">แพ้อาหาร / อาหารพิเศษ</label>
+              <input type="text" id="seat-new-dietary" class="form-input" placeholder="เช่น ไม่ทานเนื้อ, มังสวิรัติ" />
+            </div>
+          </div>
+          <div style="margin-top:12px; display:flex; justify-content:flex-end;">
+            <button type="submit" class="btn btn-primary btn-sm">+ บันทึกและจัดนั่งโต๊ะนี้ทันที</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Option 2: Pick Existing Unassigned Guest -->
+      <div style="background:var(--bg-surface-solid); padding:16px; border-radius:var(--radius-md); border:1px solid var(--border-soft);">
+        <h4 style="font-size:13.5px; font-weight:600; color:var(--champagne-600); margin-bottom:10px;">
+          👥 วิธีที่ 2: หรือเลือกจากแขกที่มีในระบบที่ยังไม่มีโต๊ะ
+        </h4>
+        <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+          <select id="seat-existing-guest-select" class="form-select" style="flex:1; min-width:200px;">
+            <option value="">-- เลือกแขกที่ยังไม่ระบุโต๊ะ --</option>
+          </select>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="App.assignExistingGuestToTable()">
+            จัดเข้าโต๊ะนี้ →
+          </button>
+        </div>
+      </div>
+
+      <div class="modal-footer" style="margin-top:16px;">
+        <button type="button" class="btn btn-secondary" onclick="App.closeModal('modal-seat-person')">ปิดหน้าต่าง</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
